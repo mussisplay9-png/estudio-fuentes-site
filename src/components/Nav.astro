@@ -1,0 +1,41 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+  waLink: string;
+}
+
+const { content, waLink } = Astro.props;
+const otherLang = content.htmlLang === 'es' ? 'en' : 'es';
+const anchors =
+  content.htmlLang === 'es'
+    ? [
+        { href: '#servicios', label: content.nav.servicios },
+        { href: '#proceso', label: content.nav.proceso },
+        { href: '#contacto', label: content.nav.contacto },
+      ]
+    : [
+        { href: '#services', label: content.nav.servicios },
+        { href: '#process', label: content.nav.proceso },
+        { href: '#contact', label: content.nav.contacto },
+      ];
+---
+
+<nav
+  class="flex items-center gap-4 sticky top-0 z-10 bg-ground border-b-2 border-ink"
+  style="padding-block: 12px; padding-inline: max(clamp(20px,5vw,72px), calc((100% - 1200px) / 2 + clamp(20px,5vw,72px)));"
+>
+  <span class="font-heading font-extrabold text-lg mr-auto whitespace-nowrap">{content.nav.brand}</span>
+  {anchors.map((a) => (
+    <a href={a.href} class="hidden md:inline nav-link whitespace-nowrap text-ink">{a.label}</a>
+  ))}
+  <a
+    href={content.otherPath}
+    data-lang-toggle={otherLang}
+    class="whitespace-nowrap font-heading font-extrabold text-[13px] tracking-[0.08em] uppercase text-ink/65 hover:text-accent transition-colors"
+  >
+    {content.nav.toggleLabel}
+  </a>
+  <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary">{content.nav.cta}</a>
+</nav>

@@ -1,0 +1,117 @@
+---
+import type { SiteContent } from '../data/site';
+import { CONTACT_EMAIL, DOMAIN } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+  waLink: string;
+}
+
+const { content, waLink } = Astro.props;
+const sectionId = content.htmlLang === 'es' ? 'contacto' : 'contact';
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const idPrefix = content.htmlLang;
+---
+
+<section id={sectionId} style="padding: 84px 0;">
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 56px clamp(24px,5vw,96px);">
+    <div>
+      <span
+        data-reveal
+        class="reveal reveal-mark range-60 block text-[13px] leading-[14px] tracking-[0.08em] uppercase text-accent-700"
+        style="margin: 0 0 14px;"
+      >
+        {content.contact.kicker}
+      </span>
+      <h2
+        data-reveal
+        class="reveal reveal-rise range-60 font-heading font-extrabold"
+        style="font-size: clamp(28px,3.2vw,40px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 28px -0.03em;"
+      >
+        {content.contact.title}
+      </h2>
+      <p class="text-ink/78" style="font-size: 15.5px; line-height: 28px; margin: 0 0 28px; max-width: 46ch;">
+        {content.contact.body}
+      </p>
+      <div class="flex gap-3 flex-wrap" style="margin: 0 0 28px;">
+        <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary">{content.contact.ctaLabel}</a>
+      </div>
+      <p style="font-size: 15.5px; line-height: 28px; margin: 0;">
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a><br />{DOMAIN}
+      </p>
+    </div>
+
+    <form
+      id={`ef-form-${idPrefix}`}
+      data-contact-form
+      data-endpoint={formEndpoint}
+      data-pending={content.contact.form.pending}
+      data-success={content.contact.form.success}
+      data-error={content.contact.form.error}
+      data-mailto={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(content.contact.title)}`}
+      class="grid gap-4 content-start"
+    >
+      <div>
+        <label class="block text-xs mb-[5px] text-ink/70" for={`${idPrefix}-nombre`}>{content.contact.form.nameLabel}</label>
+        <input class="input" id={`${idPrefix}-nombre`} name="nombre" type="text" placeholder={content.contact.form.namePlaceholder} required />
+      </div>
+      <div>
+        <label class="block text-xs mb-[5px] text-ink/70" for={`${idPrefix}-email`}>{content.contact.form.emailLabel}</label>
+        <input class="input" id={`${idPrefix}-email`} name="email" type="email" placeholder={content.contact.form.emailPlaceholder} required />
+      </div>
+      <div>
+        <label class="block text-xs mb-[5px] text-ink/70" for={`${idPrefix}-detalle`}>{content.contact.form.detailLabel}</label>
+        <textarea class="input" id={`${idPrefix}-detalle`} name="detalle" rows="4" placeholder={content.contact.form.detailPlaceholder} required></textarea>
+      </div>
+      <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+        <label for={`${idPrefix}-empresa`}>{content.contact.form.honeypotLabel}</label>
+        <input id={`${idPrefix}-empresa`} name="empresa_web" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <button type="submit" class="btn btn-primary">{content.contact.form.submit}</button>
+        <span data-status class="text-[13px] leading-[20px] text-ink/70" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  function initContactForm(form: HTMLFormElement) {
+    const endpoint = form.dataset.endpoint;
+    const statusEl = form.querySelector<HTMLElement>('[data-status]');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const honeypot = form.querySelector<HTMLInputElement>('input[name="empresa_web"]');
+      if (honeypot && honeypot.value) return;
+
+      if (!endpoint) {
+        window.location.href = form.dataset.mailto ?? '#';
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+      if (statusEl) statusEl.textContent = form.dataset.pending ?? '';
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData,
+        });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        if (statusEl) statusEl.textContent = form.dataset.success ?? '';
+        form.reset();
+      } catch {
+        if (statusEl) statusEl.textContent = form.dataset.error ?? '';
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach(initContactForm);
+</script>

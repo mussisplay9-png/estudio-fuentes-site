@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageBody from '../components/PageBody.astro';
+import { site } from '../data/site';
+
+const content = site.es;
+---
+
+<Layout content={content}>
+  <PageBody content={content} />
+  <script>
+    // Redirect hint only: if the visitor previously chose English, send them to /en.
+    try {
+      if (localStorage.getItem('ef-lang') === 'en') {
+        window.location.replace('/en');
+      }
+    } catch {}
+  </script>
+</Layout>

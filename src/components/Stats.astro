@@ -1,0 +1,32 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section aria-label={content.statsLabel} style="padding: 56px 0;">
+  <div class="grid gap-x-7 gap-y-[42px]" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+    {content.stats.map((stat) => (
+      <div>
+        <p
+          data-reveal
+          class="reveal reveal-rise range-55 font-heading font-extrabold text-accent"
+          style="font-size: clamp(30px,3vw,42px); line-height: 1.1; margin: 0 0 0 -0.045em;"
+        >
+          {stat.number}
+        </p>
+        <p
+          data-reveal
+          class="reveal reveal-rise range-70 reveal-delay-08 text-[13px] leading-[20px] tracking-[0.08em] uppercase text-ink/70"
+          style="margin: 14px 0 0;"
+        >
+          {stat.label}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

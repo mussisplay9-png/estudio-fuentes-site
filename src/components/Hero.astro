@@ -1,0 +1,29 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+  waLink: string;
+}
+
+const { content, waLink } = Astro.props;
+const servicesAnchor = content.htmlLang === 'es' ? '#servicios' : '#services';
+---
+
+<section style="padding: 112px 0 84px;">
+  <h1
+    class="font-heading font-extrabold"
+    style="font-size: clamp(42px,6.2vw,84px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 0 -0.058em;"
+  >
+    <span class="block hero-rise-1">{content.hero.lines[0]}</span>
+    <span class="block hero-rise-2">{content.hero.lines[1]}</span>
+    <span class="block text-accent hero-rise-3">{content.hero.lines[2]}</span>
+  </h1>
+  <p class="hero-rise-4" style="font-size: 17px; line-height: 28px; max-width: 58ch; margin: 42px 0 0;">
+    {content.hero.paragraph}
+  </p>
+  <div class="flex gap-3 flex-wrap hero-rise-5" style="margin-top: 28px;">
+    <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary">{content.hero.ctaPrimary}</a>
+    <a href={servicesAnchor} class="btn btn-ghost">{content.hero.ctaSecondary}</a>
+  </div>
+</section>

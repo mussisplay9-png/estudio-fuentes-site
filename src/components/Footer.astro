@@ -1,0 +1,15 @@
+---
+import type { SiteContent } from '../data/site';
+import { DOMAIN } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+---
+
+<footer class="flex flex-wrap justify-between gap-7 text-[13px] leading-[28px] text-ink/70" style="padding: 42px 0;">
+  <span>{content.footer}</span>
+  <span>{DOMAIN}</span>
+</footer>

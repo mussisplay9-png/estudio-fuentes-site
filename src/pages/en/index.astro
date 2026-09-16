@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageBody from '../../components/PageBody.astro';
+import { site } from '../../data/site';
+
+const content = site.en;
+---
+
+<Layout content={content}>
+  <PageBody content={content} />
+</Layout>

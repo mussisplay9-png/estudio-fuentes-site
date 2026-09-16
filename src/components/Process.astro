@@ -1,0 +1,50 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const sectionId = content.htmlLang === 'es' ? 'proceso' : 'process';
+---
+
+<section id={sectionId} style="padding: 84px 0 70px;">
+  <span
+    data-reveal
+    class="reveal reveal-mark range-60 block text-[13px] leading-[14px] tracking-[0.08em] uppercase text-accent-700"
+    style="margin: 0 0 14px;"
+  >
+    {content.process.kicker}
+  </span>
+  <h2
+    data-reveal
+    class="reveal reveal-rise range-60 font-heading font-extrabold"
+    style="font-size: clamp(28px,3.2vw,40px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 56px -0.03em;"
+  >
+    {content.process.title}
+  </h2>
+  <div class="grid gap-x-7 gap-y-[42px]" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+    {content.process.steps.map((step) => (
+      <div class="row-hover">
+        <p
+          data-reveal
+          class="reveal reveal-mark range-60 font-heading font-extrabold text-[13px] tracking-[0.08em] uppercase text-accent-700"
+          style="margin: 0 0 14px;"
+        >
+          {step.kicker}
+        </p>
+        <h3
+          data-reveal
+          class="reveal reveal-rise range-65 font-heading font-extrabold"
+          style="font-size: 20px; line-height: 28px; margin: 0 0 14px;"
+        >
+          {step.title}
+        </h3>
+        <p data-reveal class="reveal reveal-rise range-75 reveal-delay-06 text-ink/78" style="font-size: 15.5px; line-height: 28px; margin: 0;">
+          {step.body}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

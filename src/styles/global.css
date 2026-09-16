@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-ground: #f3f2f2;
+  --color-ink: #201e1d;
+  --color-accent: #ec3013;
+  --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800;
+
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+a {
+  color: var(--color-accent-700);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-accent);
+}
+
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+/* — buttons, matching the Modernist design system — */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 8px 14.4px;
+  border-radius: 0;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-ground);
+}
+.btn-primary:hover {
+  background: var(--color-accent-600);
+}
+.btn-primary:active {
+  background: var(--color-accent-700);
+}
+.btn-ghost {
+  color: var(--color-accent);
+  padding-inline: 4px;
+}
+.btn-ghost:hover {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.input {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--color-ink);
+  caret-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-ink) 4%, var(--color-ground));
+  border: 1px solid var(--color-ink);
+  border-radius: 0;
+}
+.input:hover {
+  border-color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+.input:focus-visible {
+  border-color: var(--color-accent);
+  outline-offset: 0;
+}
+textarea.input {
+  min-height: 90px;
+  resize: vertical;
+  font-family: var(--font-body);
+}
+
+.grayscale-photo {
+  filter: grayscale(1) contrast(1.08);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.25s ease;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+.nav-link:hover {
+  color: var(--color-accent);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+.row-hover {
+  transition: padding-left 0.3s cubic-bezier(0.16, 0.84, 0.44, 1), background-color 0.3s ease;
+}
+.row-hover:hover {
+  padding-left: 16px;
+  background-color: color-mix(in srgb, var(--color-accent) 6%, transparent);
+}
+
+/* — scroll/load reveal animations — */
+@keyframes ef-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ef-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ef-rule {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes ef-mark {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 -0.1em 0 0); }
+}
+
+.reveal {
+  animation-timeline: view();
+  animation-fill-mode: both;
+}
+.reveal-rise {
+  animation-name: ef-rise;
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+.reveal-mark {
+  animation-name: ef-mark;
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+.reveal-rule {
+  animation-name: ef-rule;
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.16, 0.84, 0.44, 1);
+  transform-origin: left;
+}
+.reveal-fade {
+  animation-name: ef-fade;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+}
+.range-50 { animation-range: entry 0% entry 50%; }
+.range-55 { animation-range: entry 0% entry 55%; }
+.range-60 { animation-range: entry 0% entry 60%; }
+.range-65 { animation-range: entry 0% entry 65%; }
+.range-70 { animation-range: entry 0% entry 70%; }
+.range-75 { animation-range: entry 0% entry 75%; }
+.reveal-delay-06 { animation-delay: 0.06s; }
+.reveal-delay-08 { animation-delay: 0.08s; }
+.reveal-delay-10 { animation-delay: 0.1s; }
+
+.hero-rise-1 { animation: ef-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.05s both; }
+.hero-rise-2 { animation: ef-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.17s both; }
+.hero-rise-3 { animation: ef-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.29s both; }
+.hero-rise-4 { animation: ef-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.42s both; }
+.hero-rise-5 { animation: ef-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.54s both; }
+
+@supports not (animation-timeline: view()) {
+  [data-reveal] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}

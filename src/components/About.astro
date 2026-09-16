@@ -1,0 +1,48 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+  photoSrc?: string;
+}
+
+const { content, photoSrc } = Astro.props;
+---
+
+<section class="flex flex-wrap items-center" style="gap: 28px clamp(24px,5vw,96px); padding: 56px 0 84px;">
+  <div style="flex: 1 1 300px;">
+    <span
+      data-reveal
+      class="reveal reveal-mark range-60 block text-[13px] leading-[14px] tracking-[0.08em] uppercase text-accent-700"
+      style="margin: 0 0 14px;"
+    >
+      {content.about.kicker}
+    </span>
+    <h2 data-reveal class="reveal reveal-rise range-60 font-heading font-extrabold" style="font-size: 32px; line-height: 42px; letter-spacing: -0.015em; margin: 0;">
+      {content.about.title}
+    </h2>
+    <p
+      data-reveal
+      class="reveal reveal-rise range-70 reveal-delay-08 text-ink/78"
+      style="font-size: 15.5px; line-height: 28px; margin: 28px 0 0; max-width: 48ch;"
+    >
+      {content.about.body}
+    </p>
+  </div>
+  <figure
+    data-reveal
+    class="reveal reveal-fade range-70 grayscale-photo m-0"
+    style="flex: 1 1 380px; width: 100%; aspect-ratio: 951 / 665;"
+  >
+    {photoSrc ? (
+      <img src={photoSrc} alt={content.about.photoAlt} loading="lazy" class="w-full h-full object-cover" />
+    ) : (
+      <div
+        class="w-full h-full flex items-center justify-center text-center text-ink/55 border-2 border-dashed border-ink/40"
+        style="font-size: 13px; padding: 24px;"
+      >
+        {content.about.photoPlaceholder}
+      </div>
+    )}
+  </figure>
+</section>

@@ -1,0 +1,18 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section class="bg-accent text-ground">
+  <div class="mx-auto" style="max-width: 1200px; padding: 84px clamp(20px,5vw,72px);">
+    <h2 class="font-heading font-extrabold" style="font-size: clamp(34px,4.2vw,56px); line-height: 1.06; letter-spacing: -0.015em; margin: 0 0 0 -0.058em;">
+      <span data-reveal class="reveal reveal-rise range-60 block">{content.banner.lines[0]}</span>
+      <span data-reveal class="reveal reveal-rise range-60 reveal-delay-10 block">{content.banner.lines[1]}</span>
+    </h2>
+  </div>
+</section>

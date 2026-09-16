@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import type { SiteContent } from '../data/site';
+import { CONTACT_EMAIL, DOMAIN } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const canonicalURL = new URL(content.path, Astro.site);
+const alternateEsURL = new URL(content.htmlLang === 'es' ? content.path : content.otherPath, Astro.site);
+const alternateEnURL = new URL(content.htmlLang === 'en' ? content.path : content.otherPath, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Estudio Fuentes',
+  url: `https://${DOMAIN}`,
+  email: CONTACT_EMAIL,
+  founder: {
+    '@type': 'Person',
+    name: 'Maximiliano Fuentes',
+  },
+  description: content.metaDescription,
+  areaServed: 'AR',
+  inLanguage: [content.htmlLang],
+};
+---
+
+<!doctype html>
+<html lang={content.htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{content.metaTitle}</title>
+    <meta name="description" content={content.metaDescription} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="es" href={alternateEsURL} />
+    <link rel="alternate" hreflang="en" href={alternateEnURL} />
+    <link rel="alternate" hreflang="x-default" href={alternateEsURL} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Estudio Fuentes" />
+    <meta property="og:title" content={content.metaTitle} />
+    <meta property="og:description" content={content.metaDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content={content.htmlLang === 'es' ? 'es_AR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={content.metaTitle} />
+    <meta name="twitter:description" content={content.metaDescription} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+  <body>
+    <slot />
+    <script>
+      // Persist the visitor's language choice; used as a redirect hint on the root path only.
+      document.querySelectorAll<HTMLAnchorElement>('[data-lang-toggle]').forEach((el) => {
+        el.addEventListener('click', () => {
+          try {
+            localStorage.setItem('ef-lang', el.dataset.langToggle ?? '');
+          } catch {}
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+---
+import type { SiteContent } from '../data/site';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const sectionId = content.htmlLang === 'es' ? 'servicios' : 'services';
+---
+
+<section id={sectionId} style="padding: 84px 0 70px;">
+  <span
+    data-reveal
+    class="reveal reveal-mark range-60 block text-[13px] leading-[14px] tracking-[0.08em] uppercase text-accent-700"
+    style="margin: 0 0 14px;"
+  >
+    {content.services.kicker}
+  </span>
+  <h2
+    data-reveal
+    class="reveal reveal-rise range-60 font-heading font-extrabold"
+    style="font-size: clamp(28px,3.2vw,40px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 42px -0.03em;"
+  >
+    {content.services.title}
+  </h2>
+
+  <div class="grid" style="grid-template-columns: minmax(0,1fr);">
+    {content.services.items.map((item, i) => (
+      <div
+        data-reveal
+        class:list={['reveal reveal-rise range-50 row-hover flex flex-wrap items-baseline', i > 0 && 'border-t-2 border-ink']}
+        style="gap: 20px clamp(24px,4vw,72px); padding: 42px 0;"
+      >
+        <p
+          class="font-heading font-extrabold text-accent"
+          style="font-size: 15px; line-height: 28px; font-feature-settings: 'tnum' 1; margin: 0; flex: 0 0 auto; min-width: 48px;"
+        >
+          {item.number}
+        </p>
+        <h3
+          class="font-heading font-extrabold"
+          style="font-size: 24px; line-height: 28px; letter-spacing: -0.01em; margin: 0; flex: 1 1 240px;"
+        >
+          {item.title}
+        </h3>
+        <p
+          class="text-ink/78"
+          style="font-size: 15.5px; line-height: 28px; max-width: 52ch; margin: 0; flex: 1 1 300px;"
+        >
+          {item.body}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

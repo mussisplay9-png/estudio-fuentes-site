@@ -1,0 +1,44 @@
+---
+import type { SiteContent } from '../data/site';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import Nav from './Nav.astro';
+import Hero from './Hero.astro';
+import Divider from './Divider.astro';
+import Stats from './Stats.astro';
+import Services from './Services.astro';
+import Process from './Process.astro';
+import About from './About.astro';
+import Banner from './Banner.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const waLink = getWhatsAppLink(content.htmlLang as 'es' | 'en');
+---
+
+<div style="background: var(--color-ground); color: var(--color-ink); font-family: var(--font-body);">
+  <Nav content={content} waLink={waLink} />
+
+  <div class="mx-auto" style="max-width: 1200px; padding: 0 clamp(20px,5vw,72px);">
+    <Hero content={content} waLink={waLink} />
+    <Divider />
+    <Stats content={content} />
+    <Divider />
+    <Services content={content} />
+    <Divider />
+    <Process content={content} />
+    <About content={content} />
+  </div>
+
+  <Banner content={content} />
+
+  <div class="mx-auto" style="max-width: 1200px; padding: 0 clamp(20px,5vw,72px);">
+    <Contact content={content} waLink={waLink} />
+    <Divider />
+    <Footer content={content} />
+  </div>
+</div>
