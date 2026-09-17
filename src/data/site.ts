@@ -44,6 +44,7 @@ export interface SiteContent {
     contacto: string;
     toggleLabel: string;
     cta: string;
+    menuLabel: string;
   };
   hero: {
     lines: [string, string, string];
@@ -110,6 +111,7 @@ export const site: Record<Lang, SiteContent> = {
       contacto: 'Contacto',
       toggleLabel: 'EN',
       cta: 'Hablemos por WhatsApp',
+      menuLabel: 'Abrir menú',
     },
     hero: {
       lines: ['El trabajo repetitivo', 'no debería costarte', 'un sueldo por mes.'],
@@ -227,6 +229,7 @@ export const site: Record<Lang, SiteContent> = {
       contacto: 'Contact',
       toggleLabel: 'ES',
       cta: 'Talk on WhatsApp',
+      menuLabel: 'Open menu',
     },
     hero: {
       lines: ["Repetitive work", "shouldn't cost you", 'a salary a month.'],

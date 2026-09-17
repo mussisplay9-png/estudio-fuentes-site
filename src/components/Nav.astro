@@ -23,19 +23,61 @@ const anchors =
 ---
 
 <nav
-  class="flex items-center gap-4 sticky top-0 z-10 bg-ground border-b-2 border-ink"
+  class="sticky top-0 z-10 bg-ground border-b-2 border-ink"
   style="padding-block: 12px; padding-inline: max(clamp(20px,5vw,72px), calc((100% - 1200px) / 2 + clamp(20px,5vw,72px)));"
 >
-  <span class="font-heading font-extrabold text-lg mr-auto whitespace-nowrap">{content.nav.brand}</span>
-  {anchors.map((a) => (
-    <a href={a.href} class="hidden md:inline nav-link whitespace-nowrap text-ink">{a.label}</a>
-  ))}
-  <a
-    href={content.otherPath}
-    data-lang-toggle={otherLang}
-    class="whitespace-nowrap font-heading font-extrabold text-[13px] tracking-[0.08em] uppercase text-ink/65 hover:text-accent transition-colors"
-  >
-    {content.nav.toggleLabel}
-  </a>
-  <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary">{content.nav.cta}</a>
+  <div class="flex items-center gap-4">
+    <span class="font-heading font-extrabold text-lg mr-auto whitespace-nowrap">{content.nav.brand}</span>
+    {anchors.map((a) => (
+      <a href={a.href} class="hidden md:inline nav-link whitespace-nowrap text-ink">{a.label}</a>
+    ))}
+    <a
+      href={content.otherPath}
+      data-lang-toggle={otherLang}
+      class="whitespace-nowrap font-heading font-extrabold text-[13px] tracking-[0.08em] uppercase text-ink/65 hover:text-accent transition-colors"
+    >
+      {content.nav.toggleLabel}
+    </a>
+    <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary">{content.nav.cta}</a>
+    <button
+      type="button"
+      class="md:hidden flex items-center justify-center"
+      style="width: 36px; height: 36px;"
+      data-menu-button
+      aria-expanded="false"
+      aria-controls="ef-mobile-menu"
+      aria-label={content.nav.menuLabel}
+    >
+      <svg data-menu-icon-open xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg data-menu-icon-close class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+  </div>
+
+  <div id="ef-mobile-menu" data-menu-panel class="hidden md:hidden" style="padding-top: 16px;">
+    <div class="flex flex-col" style="gap: 4px;">
+      {anchors.map((a) => (
+        <a href={a.href} class="text-ink" style="padding: 10px 0; font-size: 16px; border-top: 1px solid var(--color-ink); border-top-color: color-mix(in srgb, var(--color-ink) 15%, transparent);">{a.label}</a>
+      ))}
+    </div>
+  </div>
 </nav>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-menu-button]').forEach((btn) => {
+    const panelId = btn.getAttribute('aria-controls');
+    const panel = panelId ? document.getElementById(panelId) : null;
+    if (!panel) return;
+    const iconOpen = btn.querySelector('[data-menu-icon-open]');
+    const iconClose = btn.querySelector('[data-menu-icon-close]');
+
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.classList.toggle('hidden', !open);
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+    };
+
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+    panel.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+  });
+</script>
